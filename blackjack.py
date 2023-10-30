@@ -69,18 +69,56 @@ def main():
         pass
 
     if check_busted(player_score):
-        lose()
+        if 11 in player_cards:
+            if check_busted(player_cards - 10):
+                lose()
+        else:
+            lose()
+    
+    player_continues = True
+
+    while player_continues:
+        take_card = input((f'Take another card? y/n: ')).lower()
+
+        if take_card == 'y':
+            player_cards.append(deal_card())
+            player_score = calculate_score(player_cards)
+            print(f'Player has: {player_cards}')
+            print(f'Player\'s score: {player_score}')
+            if check_busted(player_score):
+                if 11 in player_cards:
+                    if check_busted(player_cards - 10):
+                        lose()
+                        player_continues = False
+                else:
+                    lose()
+                    player_continues = False
+    
+    computer_continues = True
+
+    while computer_continues:
+
+        print(f'Computer has: {computer_cards}')
+        print(f'Computer\'s score: {computer_score}')
+
+        if check_busted(computer_score):
+            win()
+            computer_continues = False
+        if computer_score > 16:
+            if player_score > computer_score:
+                win()
+                computer_continues = False
+            else:
+                lose()
+                computer_continues = False
+        else:
+            computer_cards.append(deal_card())
+            computer_score = calculate_score(computer_cards)
 
 
 if __name__ == '__main__':
     main()
 
-# take_card = input((f'Take another card? y/n: ')).lower()
-
-# if take_card == 'y':
-#     player_cards.append(deal_card())
-#     print(f'Player has: {player_cards}')
-#     print(f'Player\'s score: {player_score}')
 
     
 
